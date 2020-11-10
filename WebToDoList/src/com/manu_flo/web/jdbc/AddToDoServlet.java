@@ -2,7 +2,6 @@ package com.manu_flo.web.jdbc;
 
 import java.io.IOException;
 import javax.annotation.Resource;
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -11,27 +10,22 @@ import javax.servlet.http.HttpServletResponse;
 import javax.sql.DataSource;
 
 /**
- * Servlet implementation class EditToDoServlet
+ * Servlet implementation class AddToDoServlet
  */
-@WebServlet("/EditToDoServlet")
-public class EditToDoServlet extends HttpServlet {
+@WebServlet("/AddToDoServlet")
+public class AddToDoServlet extends HttpServlet {
 	private static final long serialVersionUID = 1L;
 	private ToDoListDBUtil ToDoListDbUtil;
 	
 	@Resource(name="jdbc/webtodolist")
 	private DataSource dataSource;
 	
-	int id;
-
-	/**
-	 * @see Servlet#init(ServletConfig)
-	 */
 	public void init() throws ServletException {
 		super.init();
 		ToDoListDbUtil = new ToDoListDBUtil(dataSource);
 	}
 	
-	public EditToDoServlet() {
+	public AddToDoServlet() {
 		super();
 	}
 
@@ -40,10 +34,7 @@ public class EditToDoServlet extends HttpServlet {
 	 */
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		id = Integer.parseInt(request.getParameter("ToDoId"));
-		ToDo todo= ToDoListDbUtil.fetchtodo(id);
-		request.setAttribute("Todo", todo);
-		request.getRequestDispatcher("Edit-todo.jsp").forward(request, response);
+		request.getRequestDispatcher("Add-todo.jsp").forward(request, response);
 	}
 
 	/**
@@ -52,8 +43,9 @@ public class EditToDoServlet extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		String description = request.getParameter("description");
-		ToDo todo = new ToDo(id, description);
+		ToDo todo = new ToDo(description);
 		ToDoListDbUtil.updateTodo(todo);
 		response.sendRedirect("ToDoListControllerServlet");
 	}
+
 }
