@@ -10,6 +10,7 @@
 			<div id="header">
 				<h2>TO DO LIST</h2>
 				<c:url var="AddLink" value= "AddToDoServlet">
+				<c:param name="ToDoId" value="${todo.id}"/>
 				</c:url>
 				<a href="${AddLink }"> Add</a>
 			</div>
